@@ -1,3 +1,12 @@
+"""
+This real_browser.py script demonstrates how to use browser-use with your actual Chrome browser 
+instead of a separate Playwright-managed browser instance.
+My actual chrome, same profile, cookies, has my bookmarks, loged into my accounts, 
+my chrome extensions play a role. best to use my passwords!
+"""
+
+
+
 import asyncio
 import os
 import sys
@@ -25,7 +34,7 @@ async def main():
 	agent = Agent(
 		task='Find todays DOW stock price',
 		llm=ChatOpenAI(model='gpt-4.1-mini'),
-		browser_session=browser_session,
+		browser_session=browser_session, # single agent task, no multiple agents
 	)
 
 	await agent.run()

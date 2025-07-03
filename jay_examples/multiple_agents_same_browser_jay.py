@@ -4,9 +4,12 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from dotenv import load_dotenv
-
-load_dotenv()
+try:
+	from dotenv import load_dotenv
+	load_dotenv()
+except ImportError:
+	# dotenv not installed, skip loading .env file
+	pass
 
 
 from browser_use import Agent
@@ -16,6 +19,10 @@ from browser_use.llm import ChatOpenAI
 
 
 async def main():
+	# Create downloads directory if it doesn't exist
+	downloads_dir = "/Users/acrobat/GitHubAcrobat/browser-use/jay_examples/downloads"
+	os.makedirs(downloads_dir, exist_ok=True)
+	
 	browser_session = BrowserSession(
 		browser_profile=BrowserProfile(
 			keep_alive=True,
@@ -28,8 +35,8 @@ async def main():
 	current_agent = None
 	llm = ChatOpenAI(model='gpt-4.1-mini')
 
-	task1 = 'find todays weather on San Francisco and extract it as json'
-	task2 = 'find todays weather in Zurich and extract it as json'
+	task1 = f'find todays weather on Istanbul and extract it as json. Save the JSON data to a file named "istanbul_weather.json" in the directory {downloads_dir}'
+	task2 = f'find todays weather in Berlin and extract it as json. Save the JSON data to a file named "berlin_weather.json" in the directory {downloads_dir}'
 
 	agent1 = Agent(
 		task=task1,
